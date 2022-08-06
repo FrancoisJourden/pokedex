@@ -11,6 +11,7 @@ class PokemonListScreen extends StatelessWidget {
   final int page;
   final int nb;
 
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Response>(
@@ -21,53 +22,42 @@ class PokemonListScreen extends StatelessWidget {
             return MaterialApp(
               home: Scaffold(
                 appBar: AppBar(title: const Text("Liste pokemons")),
-                body: const CircularProgressIndicator(),
+                body: const Center(
+                  child: CircularProgressIndicator()
+                ),
               ),
             );
           }
           Map<String, dynamic> res = jsonDecode(snapshot.data?.body ?? "");
           return MaterialApp(
-              home: Scaffold(
-            appBar: AppBar(title: const Text("Liste pokemons")),
-            body: Padding(
-                padding: const EdgeInsets.all(20),
-                child: SingleChildScrollView(
-                    child: Column(children: [
-                  Column(
+            home: Scaffold(
+              appBar: AppBar(title: const Text("Liste pokemons")),
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
                     children: [
-                      for (var element in res['results'])
-                        PokemonCard(
-                          url: element['url'],
-                          name: element['name'],
-                        ),
+                      Column(
+                        children: [
+                          for (var element in res['results'])
+                            PokemonCard(
+                              url: element['url'],
+                              name: element['name'],
+                            ),
+                        ],
+                      ),
+                      ButtonBar(
+                        children: [
+                          if(page>1) TextButton(onPressed: () => runApp(PokemonListScreen(page:page-1)), child: const Text('Previous')),
+                          if(jsonDecode(snapshot.data?.body??"")['next']!=null)TextButton(onPressed: () => runApp(PokemonListScreen(page:page+1)), child: const Text('Next'))
+                        ],
+                      )
                     ],
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child:
-                        Text("Page $page sur ${(res['count'] / nb).round()}"),
-                  )
-                ]))
-                // GridView.count(
-                //         primary: false,
-                //         padding: const EdgeInsets.all(20),
-                //         crossAxisSpacing: 10,
-                //         mainAxisSpacing: 10,
-                //         shrinkWrap: true,
-                //         crossAxisCount: pokemon.abilities.length,
-                //         children: [
-                //           for (var ability in pokemon.abilities)
-                //             Container(
-                //               padding: const EdgeInsets.all(8),
-                //               color: Colors.blue,
-                //               child: Text(ability?.name ?? ""),
-                //             ),
-                //         ],
-                //       ),
                 ),
-          ),
-            builder:
-            EasyLoading.init(),
+              ),
+            ),
+            builder: EasyLoading.init(),
           );
         });
   }
