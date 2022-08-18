@@ -7,7 +7,7 @@ import 'package:http/http.dart';
 import 'package:pokemon/app/screens/pokemon/list/pokemon_card.dart';
 
 class PokemonListScreen extends StatelessWidget {
-  PokemonListScreen({Key? key, this.page = 1, this.nb = 20}) : super(key: key);
+  const PokemonListScreen({Key? key, this.page = 1, this.nb = 20}) : super(key: key);
   final int page;
   final int nb;
 
@@ -34,7 +34,7 @@ class PokemonListScreen extends StatelessWidget {
               appBar: AppBar(title: const Text("Liste pokemons")),
               body: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
                       Column(

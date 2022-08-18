@@ -6,10 +6,11 @@ import 'package:pokemon/app/modules/pokemon/models/pokemon_sprite_model.dart';
 import 'package:pokemon/app/modules/pokemon/models/pokemon_type_model.dart';
 
 class Pokemon{
-  Pokemon(this.id, this.name, this.abilities, this.sprite, this.types);
+  Pokemon(this.id, this.name, this.description, this.abilities, this.sprite, this.types);
 
   int id;
   String name;
+  String description;
   List<PokemonAbility?> abilities;
   PokemonSprite sprite;
   List<PokemonType> types;
@@ -18,14 +19,16 @@ class Pokemon{
     var specie = (await http.get(Uri.parse(json['species']['url']))).body;
     int id = json['id'];
 
-    // String name = (jsonDecode(specie)['names'] as List<dynamic>).firstWhere((element) => element['language']['name']=='fr')['name'];
     String name = json['name'];
+
+    String description = (jsonDecode(specie)['flavor_text_entries'] as List<dynamic>).firstWhere((element) => element['language']['name']=='en')['flavor_text'].replaceAll('\n', ' ');
 
     List<dynamic> abilitiesList = json['abilities'];
     List<PokemonAbility?> abilities = [];
     for (var element in abilitiesList) {
-      // Map<String, dynamic> ab = jsonDecode(element);
-      PokemonAbility ability = PokemonAbility(element['ability']['name'], element['ability']['url']);
+      var url = Uri.parse(element['ability']['url']);
+      http.Response response = await http.get(url);
+      PokemonAbility ability = PokemonAbility.fromJson(jsonDecode(response.body));
       abilities.add(ability);
     }
 
@@ -38,13 +41,13 @@ class Pokemon{
       types.add(type);
     }
     
-    return Pokemon(id, name, abilities, sprite, types);
+    return Pokemon(id, name, description, abilities, sprite, types);
   }
 
 
   static Future<Pokemon> fromUrl(String url) async {
-    var url = Uri.parse('https://pokeapi.co/api/v2/pokemon/bulbasaur');
-    http.Response response = await http.get(url);
+    var uri = Uri.parse(url);
+    http.Response response = await http.get(uri);
     return Pokemon.fromJson(jsonDecode(response.body));
   }
 }

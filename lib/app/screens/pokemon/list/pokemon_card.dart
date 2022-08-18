@@ -3,12 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pokemon/app/modules/pokemon/models/pokemon_model.dart';
-import 'package:pokemon/app/screens/pokemon/list/pokemon_list_screen.dart';
-import 'package:pokemon/app/screens/pokemon/pokemon_screen.dart';
+import 'package:pokemon/app/screens/pokemon/pokemon_info/pokemon_screen.dart';
 import 'package:http/http.dart' as http;
 
 class PokemonCard extends StatelessWidget {
-  PokemonCard({required this.name, required this.url});
+  PokemonCard({Key? key, required this.name, required this.url}) : super(key: key);
 
   String name;
   String url;
@@ -28,7 +27,8 @@ class PokemonCard extends StatelessWidget {
               context,
               MaterialPageRoute(builder: (context) => PokemonScreen(
                 pokemon: pokemon,
-              ))
+              ),
+              )
             );
           },
           child: Container(
@@ -40,8 +40,10 @@ class PokemonCard extends StatelessWidget {
                   name,
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.white),
-                )),
+                ),
+            ),
           ),
-        ));
+        )
+    );
   }
 }

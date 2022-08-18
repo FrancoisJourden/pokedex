@@ -1,11 +1,11 @@
-class Type{
-  Type({required this.name, required this.url});
+class PType{
+  PType({required this.name, required this.url});
   final String name;
   final String url;
 
-  factory Type.fromJson(Map<String, dynamic> json){
+  factory PType.fromJson(Map<String, dynamic> json){
     String name = json['name'];
     String url = json['url]'];
-    return Type(name: name, url: url);
+    return PType(name: name, url: url);
   }
 }
