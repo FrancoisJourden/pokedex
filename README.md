@@ -1,4 +1,3 @@
 # pokemon
 
-Pokemon wiki
-This is a personal training project made with flutter using pokeAPI
+Pokemon wiki is a personal training project made with flutter using pokeAPI
